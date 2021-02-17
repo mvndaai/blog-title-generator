@@ -5,23 +5,47 @@
     <title>Blog Title Generator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-        .flex-column {
+        body {
+            margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            background-color: lightsteelblue;
+        }
+        .flex-column {
+            display: flex;
+            flex-direction: column;
         }
         hr { width: 100%; }
+        h1 {
+            background-color: rgb(0, 119, 255);
+            color: white;
+            width: 100%;
+            text-align: center;
+            margin: 0 0 12px 0;
+            padding: 12px 0;
+            text-shadow: 1px 1px 2px black;
+        }
+        .inputs {
+            font-size: 20px;
+            border: 1px solid black;
+            padding: 0 20px;
+            margin-top: 12px;
+        }
+        .inputs select {font-size: 20px; }
+        .inputs > * { margin: 4px 0; }
+
+
     </style>
     <script type="text/javascript" src="data.js"></script>
 </head>
 
-<body class='flex-column'>
+<body>
     <h1>Blog Title Generator</h1>
-    <hr>
     <iframe width="560" height="315" src="https://www.youtube.com/embed/I7VEx2dviNk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
-    <div class='flex-column'>
+    <div class='flex-column inputs'>
         <div>
             <input id='hasSnazz' type='checkbox'>
             <label for="hasSnazz">Hide snazz?</label>
@@ -81,6 +105,9 @@
         document.getElementById("snazz").value = snazz;
         document.getElementById("target").value = target;
     }
+
+    // click to make it random
+    document.getElementById('randomize').click();
 </script>
 
 
