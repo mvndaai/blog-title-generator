@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <title>Blog Title Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        .flex-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        hr { width: 100%; }
+    </style>
+    <script type="text/javascript" src="data.js"></script>
+</head>
+
+<body class='flex-column'>
+    <h1>Blog Title Generator</h1>
+    <hr>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/I7VEx2dviNk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+    <div class='flex-column'>
+        <div>
+            <input id='hasSnazz' type='checkbox'>
+            <label for="hasSnazz">Hide snazz?</label>
+        </div>
+
+        <br>
+        <select id='snazz'></select>
+        <select id='target'></select>
+        has a
+        <select id='gripe'></select>
+        problem
+
+        <br>
+        <br>
+        <button id='randomize'>Randomize</button>
+    </div>
+
+    <hr>
+    <a href=''>Click here to add more options</a>
+
+
+
+</body>
+
+<script>
+    // show/hide snazz
+    document.getElementById('hasSnazz').oninput = function(e){
+        if (!e.target.checked) {
+            document.getElementById('snazz').style = '';
+        } else {
+            document.getElementById('snazz').style = 'display:none;';
+        }
+    }
+
+    // sort everything
+    data.gripe.sort();
+    data.snazz.sort();
+    data.target.sort();
+
+    // add options
+    function addToSelect(id, i, text) {
+        var option = document.createElement("option");
+        option.text = text;
+        option.value = i
+        document.getElementById(id).add(option);
+    }
+    data.gripe.forEach((txt, i) => addToSelect('gripe', i, txt));
+    data.snazz.forEach((txt, i) => addToSelect('snazz', i, txt));
+    data.target.forEach((txt, i) => addToSelect('target', i, txt));
+
+    // console.log("data", data);
+
+    // randomize button
+    document.getElementById('randomize').onclick = function() {
+        let gripe = Math.floor(Math.random() * data.gripe.length)
+        let snazz = Math.floor(Math.random() * data.snazz.length)
+        let target = Math.floor(Math.random() * data.target.length)
+
+        document.getElementById("gripe").value = gripe;
+        document.getElementById("snazz").value = snazz;
+        document.getElementById("target").value = target;
+    }
+</script>
+
+
+</html>
