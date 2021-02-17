@@ -46,21 +46,17 @@
 
 
     <div class='flex-column inputs'>
+        <button id='randomize'>Randomize</button>
         <div>
             <input id='hasSnazz' type='checkbox'>
             <label for="hasSnazz">Hide snazz?</label>
         </div>
 
-        <br>
         <select id='snazz'></select>
-        <select id='target'></select>
-        has a
         <select id='gripe'></select>
-        problem
-
-        <br>
-        <br>
-        <button id='randomize'>Randomize</button>
+        <span id='text1'>problem in</span>
+        <select id='target'></select>
+        <span id='text2'></span>
     </div>
 
     <hr>
@@ -72,8 +68,23 @@
     document.getElementById('hasSnazz').oninput = function(e){
         if (!e.target.checked) {
             document.getElementById('snazz').style = '';
+            document.getElementById('text1').innerHTML = 'problem in'
+            document.getElementById('text2').innerHTML = ''
+
+            document.getElementById('snazz').style.order = '1';
+            document.getElementById('gripe').style.order = '2';
+            document.getElementById('text1').style.order = '3';
+            document.getElementById('target').style.order = '4';
         } else {
             document.getElementById('snazz').style = 'display:none;';
+            document.getElementById('text1').innerHTML = 'has a'
+            document.getElementById('text2').innerHTML = 'problem'
+
+            document.getElementById('snazz').style.order = '1';
+            document.getElementById('target').style.order = '2';
+            document.getElementById('text1').style.order = '3';
+            document.getElementById('gripe').style.order = '4';
+            document.getElementById('text2').style.order = '5';
         }
     }
 
