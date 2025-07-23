@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 
-<head lang="en">
+<head lang='en'>
     <title>Blog Title Generator</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
     <style>
         body {
             margin: 0;
@@ -15,6 +15,11 @@
         .flex-column {
             display: flex;
             flex-direction: column;
+        }
+        .flex-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         hr { width: 100%; }
         h1 {
@@ -37,26 +42,35 @@
 
 
     </style>
-    <script type="text/javascript" src="data.js"></script>
+    <script type='text/javascript' src='data.js'></script>
 </head>
 
 <body>
     <h1>Blog Title Generator</h1>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/I7VEx2dviNk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe width='560' height='315' src='https://www.youtube.com/embed/I7VEx2dviNk' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>
 
 
     <div class='flex-column inputs'>
         <button id='randomize'>Randomize</button>
         <div>
             <input id='hasSnazz' type='checkbox'>
-            <label for="hasSnazz">Hide snazz?</label>
+            <label for='hasSnazz'>Hide snazz?</label>
         </div>
 
-        <select id='snazz'></select>
-        <select id='gripe'></select>
-        <span id='text1'>problem in</span>
-        <select id='target'></select>
-        <span id='text2'></span>
+        <div class='flex-column'>
+            <select id='snazz'></select>
+            <select id='gripe'></select>
+            <span id='text1'>problem in</span>
+            <select id='target'></select>
+            <span id='text2'></span>
+        </div>
+    </div>
+    </br>
+    <div class='flex-column flex-center'>
+        <span id='fullText'></span>
+        <a href='' target='_blank' rel='noopener'>
+            <button id='chat-gpt-btn'>Generate blog post with ChatGPT</button>
+        </a>
     </div>
 
     <hr>
@@ -64,11 +78,15 @@
 </body>
 
 <script>
+    const snazzJoiner = 'problem in'
+    const noSnazzJoiner1 = 'has a'
+    const noSnazzJoiner2 = 'problem'
+
     // show/hide snazz
     document.getElementById('hasSnazz').oninput = function(e){
         if (!e.target.checked) {
             document.getElementById('snazz').style = '';
-            document.getElementById('text1').innerHTML = 'problem in'
+            document.getElementById('text1').innerHTML = snazzJoiner;
             document.getElementById('text2').innerHTML = ''
 
             document.getElementById('snazz').style.order = '1';
@@ -77,14 +95,47 @@
             document.getElementById('target').style.order = '4';
         } else {
             document.getElementById('snazz').style = 'display:none;';
-            document.getElementById('text1').innerHTML = 'has a'
-            document.getElementById('text2').innerHTML = 'problem'
+            document.getElementById('text1').innerHTML = noSnazzJoiner1;
+            document.getElementById('text2').innerHTML = noSnazzJoiner2;
 
             document.getElementById('target').style.order = '1';
             document.getElementById('text1').style.order = '2';
             document.getElementById('gripe').style.order = '3';
             document.getElementById('text2').style.order = '4';
         }
+    }
+
+    function updateFullText() {
+        let gripe = document.getElementById('gripe').value;
+        let snazz = document.getElementById('snazz').value;
+        let target = document.getElementById('target').value;
+
+
+        let fullText = '';
+        if (document.getElementById('hasSnazz').checked) {
+            fullText = `${data.target[target]} ${noSnazzJoiner1} ${data.gripe[gripe]} ${noSnazzJoiner2}`;
+        } else {
+            fullText = `${data.snazz[snazz]} ${data.gripe[gripe]} ${snazzJoiner} ${data.target[target]}`;
+        }
+
+        questionStarters = ['what', 'how', 'why', 'when', 'where', 'who'];
+        // check if the fullText starts with a question starter
+        let startsWithQuestion = questionStarters.some(starter => fullText.toLowerCase().startsWith(starter));
+        // if it does, add a question mark
+        if (startsWithQuestion) {
+            fullText += '?';
+        }
+        // capitalize first letter
+        fullText = fullText.charAt(0).toUpperCase() + fullText.slice(1);
+
+
+
+        document.getElementById('fullText').innerHTML = fullText;
+        // https://community.openai.com/t/url-to-pass-prompt-into-gpt/574003/4
+
+        const prompt = `Write a blog post about: ${fullText}`;
+        let chatGPTLink = `https://chat.openai.com/?model=gpt-4&q=${encodeURIComponent(prompt)}`;
+        document.getElementById('chat-gpt-btn').parentNode.href = chatGPTLink;
     }
 
     // sort everything
@@ -94,7 +145,7 @@
 
     // add options
     function addToSelect(id, i, text) {
-        var option = document.createElement("option");
+        var option = document.createElement('option');
         option.text = text;
         option.value = i
         document.getElementById(id).add(option);
@@ -103,7 +154,7 @@
     data.snazz.forEach((txt, i) => addToSelect('snazz', i, txt));
     data.target.forEach((txt, i) => addToSelect('target', i, txt));
 
-    // console.log("data", data);
+    // console.log('data', data);
 
     // randomize button
     document.getElementById('randomize').onclick = function() {
@@ -111,13 +162,20 @@
         let snazz = Math.floor(Math.random() * data.snazz.length)
         let target = Math.floor(Math.random() * data.target.length)
 
-        document.getElementById("gripe").value = gripe;
-        document.getElementById("snazz").value = snazz;
-        document.getElementById("target").value = target;
+        document.getElementById('gripe').value = gripe;
+        document.getElementById('snazz').value = snazz;
+        document.getElementById('target').value = target;
+        updateFullText()
     }
 
     // click to make it random
     document.getElementById('randomize').click();
+
+    // Upddate full text on and link on ch
+    document.getElementById('gripe').onchange = () => updateFullText();
+    document.getElementById('snazz').onchange = () => updateFullText();
+    document.getElementById('target').onchange = () => updateFullText();
+    document.getElementById('hasSnazz').onchange = () => updateFullText();
 </script>
 
 
