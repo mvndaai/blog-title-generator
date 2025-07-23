@@ -22,7 +22,7 @@ var data = {
     ],
     'snazz': [
         'why are we ignoring the',
-        'yes, we stilll have a',
+        'yes, we still have a',
         'we need to talk about the',
         `it's time to address the`,
     ]
